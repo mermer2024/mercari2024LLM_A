@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/mercari2024LLMA/mercari2024LLM_A/model"
-	"github.com/mercari2024LLMA/mercari2024LLM_A/openaiclient"
+	"github.com/mermer2024/mercari2024LLM_A/model"
+	"github.com/mermer2024/mercari2024LLM_A/openaiclient"
 )
 
 type Handler struct {

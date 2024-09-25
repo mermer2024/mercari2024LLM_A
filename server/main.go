@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/mercari2024LLMA/mercari2024LLM_A/api"
-	"github.com/mercari2024LLMA/mercari2024LLM_A/handler"
-	"github.com/mercari2024LLMA/mercari2024LLM_A/migration"
-	"github.com/mercari2024LLMA/mercari2024LLM_A/model"
-	"github.com/mercari2024LLMA/mercari2024LLM_A/openaiclient"
+	"github.com/mermer2024/mercari2024LLM_A/api"
+	"github.com/mermer2024/mercari2024LLM_A/handler"
+	"github.com/mermer2024/mercari2024LLM_A/migration"
+	"github.com/mermer2024/mercari2024LLM_A/model"
+	"github.com/mermer2024/mercari2024LLM_A/openaiclient"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo/v4"

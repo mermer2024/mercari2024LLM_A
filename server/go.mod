@@ -1,4 +1,4 @@
-module github.com/mercari2024LLMA/mercari2024LLM_A
+module github.com/mermer2024/mercari2024LLM_A
 
 go 1.22.5
 
