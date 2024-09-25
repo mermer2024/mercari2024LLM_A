@@ -7,8 +7,25 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// PostOpenAIRequest defines model for PostOpenAIRequest.
+type PostOpenAIRequest struct {
+	Sentences []string `json:"sentences"`
+}
+
+// PostOpenAIResponse defines model for PostOpenAIResponse.
+type PostOpenAIResponse struct {
+	// Message The message returned from OpenAI API
+	Message *string `json:"message,omitempty"`
+}
+
+// PostOpenaiJSONRequestBody defines body for PostOpenai for application/json ContentType.
+type PostOpenaiJSONRequestBody = PostOpenAIRequest
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
+
+	// (POST /openai)
+	PostOpenai(ctx echo.Context) error
 
 	// (GET /ping)
 	GetPing(ctx echo.Context) error
@@ -17,6 +34,15 @@ type ServerInterface interface {
 // ServerInterfaceWrapper converts echo contexts to parameters.
 type ServerInterfaceWrapper struct {
 	Handler ServerInterface
+}
+
+// PostOpenai converts echo context to params.
+func (w *ServerInterfaceWrapper) PostOpenai(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostOpenai(ctx)
+	return err
 }
 
 // GetPing converts echo context to params.
@@ -56,6 +82,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 		Handler: si,
 	}
 
+	router.POST(baseURL+"/openai", wrapper.PostOpenai)
 	router.GET(baseURL+"/ping", wrapper.GetPing)
 
 }

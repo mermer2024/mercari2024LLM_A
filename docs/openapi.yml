@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: mercariLLM2024_A
-  version: 0.0.1
+  version: 0.0.2
   description: mercariLLM2024_A
 
 paths:
@@ -18,3 +18,49 @@ paths:
               schema:
                 type: string
                 example: pong
+
+  /openai:
+    post:
+      description: Sends sentences to OpenAI API for completion
+      tags:
+        - openai
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostOpenAIRequest"
+      responses:
+        200:
+          description: OpenAI API response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostOpenAIResponse"
+
+components:
+  schemas:
+
+    PostOpenAIRequest:
+      type: object
+      properties:
+        sentences:
+          type: array
+          items:
+            type: string
+            description: Sentence to be sent to OpenAI API
+      required:
+        - sentences
+      example:
+        sentences:
+          - "This is the first sentence."
+          - "This is the second sentence."
+
+    PostOpenAIResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message returned from OpenAI API
+      example:
+        message: "This is the response from OpenAI API."
