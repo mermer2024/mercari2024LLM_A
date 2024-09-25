@@ -1,0 +1,20 @@
+openapi: 3.0.3
+info:
+  title: mercariLLM2024_A
+  version: 0.0.1
+  description: mercariLLM2024_A
+
+paths:
+  /ping:
+    get:
+      description: Ping endpoint
+      tags:
+        - health
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: pong

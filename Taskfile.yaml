@@ -1,0 +1,7 @@
+version: '3'
+
+tasks:
+  install-server-openapi-codegen:
+    cmd: go install github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+  server-openapi-codegen:
+    cmd: oapi-codegen --config=./server/oapi-config.yaml docs/openapi.yml
