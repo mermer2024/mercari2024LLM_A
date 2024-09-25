@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
   title: mercariLLM2024_A
-  version: 0.0.2
-  description: mercariLLM2024_A
+  version: 1.0.0
+  description: SelectShop API for matching users and select shops, creating/editing shops, following shops, and other features.
 
 paths:
   /ping:
@@ -23,7 +23,7 @@ paths:
     post:
       description: Sends sentences to OpenAI API for completion
       tags:
-        - openai
+        - openai example
       requestBody:
         required: true
         content:
@@ -38,9 +38,264 @@ paths:
               schema:
                 $ref: "#/components/schemas/PostOpenAIResponse"
 
+  /match_shops:
+    post:
+      description: Matches users with suitable select shops.
+      tags:
+        - Match
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                interests:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - userId
+                - interests
+      responses:
+        200:
+          description: Successful matching
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Shop'
+
+  /shops:
+    post:
+      description: Creates a new select shop.
+      tags:
+        - Shop
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateShopRequest'
+      responses:
+        201:
+          description: Shop created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+
+  /shops/{shopId}:
+    parameters:
+      - name: shopId
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      description: Edit an existing select shop.
+      tags:
+        - Shop
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditShopRequest'
+      responses:
+        200:
+          description: Shop updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
+
+  /shops/{shopId}/follow:
+    post:
+      description: Follow a select shop.
+      tags:
+        - Follow
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+              required:
+                - userId
+      responses:
+        200:
+          description: Successfully followed the shop
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+
+  /shops/{shopId}/unfollow:
+    delete:
+      description: Unfollow a select shop.
+      tags:
+        - Follow
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successfully unfollowed the shop
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+
+  /shops/{shopId}/search_products:
+    get:
+      description: Search for products in a specific shop.
+      tags:
+        - Product
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: keyword
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of matching products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductList'
+
+  /search_shops:
+    get:
+      description: Search for select shops.
+      tags:
+        - Shop
+      parameters:
+        - name: keyword
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of matching shops
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopList'
+
+  /recommendations/today:
+    get:
+      description: Get today's recommended products and shops.
+      tags:
+        - Recommendation
+      responses:
+        200:
+          description: List of today's recommendations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendationList'
+
+  /shops/{shopId}/products/{productId}/caption:
+    post:
+      description: Add a caption to a product in a shop.
+      tags:
+        - Product
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                caption:
+                  type: string
+              required:
+                - caption
+      responses:
+        200:
+          description: Caption added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+
+  /shops/{shopId}/products/{productId}/sold_out:
+    post:
+      description: Notify shop owner when a product is sold out.
+      tags:
+        - Product
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Owner notified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+
 components:
   schemas:
-
     PostOpenAIRequest:
       type: object
       properties:
@@ -64,3 +319,88 @@ components:
           description: The message returned from OpenAI API
       example:
         message: "This is the response from OpenAI API."
+
+    Shop:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        ownerId:
+          type: string
+        description:
+          type: string
+        followers:
+          type: integer
+      required:
+        - id
+        - name
+        - ownerId
+        - description
+
+    CreateShopRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        ownerId:
+          type: string
+        description:
+          type: string
+        headerImage:
+          type: string
+      required:
+        - name
+        - ownerId
+        - description
+
+    EditShopRequest:
+      type: object
+      properties:
+        description:
+          type: string
+        headerImage:
+          type: string
+      required:
+        - description
+
+    ProductList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+
+    ShopList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Shop'
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+      required:
+        - id
+        - name
+        - price
+        - stock
+
+    RecommendationList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Recommendation'
+
+    Recommendation:
+      type: object
+      properties:
+        shop:
+          $ref: '#/components/schemas/Shop'
+        product:
+          $ref: '#/components/schemas/Product'
