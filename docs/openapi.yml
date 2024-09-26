@@ -233,7 +233,7 @@ paths:
                 products:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Product'
+                    $ref: '#/components/schemas/ProductRequest'
               required:
                 - products
       responses:
@@ -469,6 +469,26 @@ components:
           type: string
       required:
         - id
+        - name
+        - price
+        - stock
+    
+    ProductRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        stock:
+          type: integer
+        description:
+          type: string
+        imageUrl:
+          type: string
+      required:
         - name
         - price
         - stock

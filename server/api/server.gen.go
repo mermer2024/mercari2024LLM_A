@@ -51,6 +51,16 @@ type Product struct {
 // ProductList defines model for ProductList.
 type ProductList = []Product
 
+// ProductRequest defines model for ProductRequest.
+type ProductRequest struct {
+	Description *string `json:"description,omitempty"`
+	Id          *string `json:"id,omitempty"`
+	ImageUrl    *string `json:"imageUrl,omitempty"`
+	Name        string  `json:"name"`
+	Price       float32 `json:"price"`
+	Stock       int     `json:"stock"`
+}
+
 // PurchaseHistories defines model for PurchaseHistories.
 type PurchaseHistories = []PurchaseHistory
 
@@ -103,7 +113,7 @@ type PostShopsShopIdFollowJSONBody struct {
 
 // PostShopsShopIdProductsJSONBody defines parameters for PostShopsShopIdProducts.
 type PostShopsShopIdProductsJSONBody struct {
-	Products []Product `json:"products"`
+	Products []ProductRequest `json:"products"`
 }
 
 // PostShopsShopIdProductsProductIdCaptionJSONBody defines parameters for PostShopsShopIdProductsProductIdCaption.
