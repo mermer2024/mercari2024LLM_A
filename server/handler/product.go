@@ -45,6 +45,9 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 	}
 
 	productList, err := h.repo.GetProductListByShopID(shopIdUUID)
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
 
 	// TODO:shopのdescriptionをLLMで変更する。
 	h.client.ShopDescription(ctx.Request().Context(), productList)
