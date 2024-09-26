@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: mercariLLM2024_A
-  version: 1.0.0
+  version: 1.1.0
   description: SelectShop API for matching users and select shops, creating/editing shops, following shops, and other features.
 
 paths:
@@ -196,6 +196,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductList'
+
+  /shops/{shopId}/products:
+    post:
+      description: Add multiple products to a shop.
+      tags:
+        - Product
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                products:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Product'
+              required:
+                - products
+      responses:
+        201:
+          description: Products added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
 
   /search_shops:
     get:
