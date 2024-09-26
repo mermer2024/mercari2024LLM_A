@@ -9,13 +9,14 @@ import (
 	"github.com/mermer2024/mercari2024LLM_A/api"
 )
 
-// (GET /users/{userId}/purchase_history)
+// (GET /users/{userId}/purchase_histories)
 func (h *Handler) GetUsersUserIdPurchaseHistories(ctx echo.Context, userId string) error {
-	fmt.Println("Hello ")
 	userID, err := uuid.Parse(userId)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
 	}
+
+	fmt.Println(userID)
 
 	histories, err := h.repo.GetPurchaseHistoriesByUserID(userID)
 	if err != nil {

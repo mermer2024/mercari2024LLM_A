@@ -18,7 +18,7 @@ type PurchaseHistory struct {
 
 func (repo *Repository) GetPurchaseHistoriesByUserID(userID uuid.UUID) ([]PurchaseHistory, error) {
 	var purchases []PurchaseHistory
-	err := repo.db.Select(&purchases, "SELECT * FROM purchase_history JOIN products ON purchase_history.product_id = products.id WHERE user_id = ?", userID)
+	err := repo.db.Select(&purchases, "SELECT purchase_history.id, purchase_history.user_id, purchase_history.product_id, products.name as product_name, purchase_history.quantity, purchase_history.price_at_purchase, purchase_history.purchase_date FROM purchase_history JOIN products ON purchase_history.product_id = products.id WHERE user_id = ?", userID)
 	return purchases, err
 }
 
