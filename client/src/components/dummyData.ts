@@ -5,7 +5,7 @@ export const dummyShops: Shop[] = [
     id: "shop-1",
     name: "ビンテージ家具セレクト",
     ownerId: "user-1",
-    description: "ビンテージ物は味があっていいですよね〜。ミッドセンチュリーの家具を主にセレクトしていますので、ぜひ一度、訪れてみてください！",
+    description: "ビンテージ物は味があっていいですよね〜。１年ほど前にメルカリで初めてビンテージチェアを購入してから、すっかり虜になってしまっています（＾＾） 僕がいいなと思った商品をセレクトしてありますので、どうぞ参考になさってください。一緒にビンテージの扉を開きましょう！",
     headerImage: "/header1.png",
     followers: 120,
   },
@@ -27,42 +27,54 @@ export const dummyShops: Shop[] = [
   },
 ];
 
-const dummyProducts: Product[] = [
+export const dummyProducts: Product[] = [
   {
     id: "product-1",
     name: "デジタル一眼レフカメラ",
     price: 75000,
     stock: 10,
+    caption: "イチオシ！",
+    image: "/item1.png",
   },
   {
     id: "product-2",
     name: "高性能レンズ",
     price: 30000,
     stock: 15,
+    caption: "イチオシ！",
+    image: "/item1.png",
   },
   {
     id: "product-3",
     name: "ゲームコンソール",
     price: 40000,
     stock: 5,
+    caption: "イチオシ！",
+    image: "/item1.png",
   },
   {
     id: "product-4",
     name: "アクションゲーム",
     price: 7000,
     stock: 20,
+    caption: "イチオシ！",
+    image: "/item1.png",
   },
   {
     id: "product-5",
     name: "ランニングシューズ",
     price: 12000,
     stock: 30,
+    caption: "イチオシ！",
+    image: "/item1.png",
   },
   {
     id: "product-6",
     name: "ヨガマット",
     price: 3500,
     stock: 25,
+    caption: "イチオシ！",
+    image: "/item1.png",
   },
 ];
 
