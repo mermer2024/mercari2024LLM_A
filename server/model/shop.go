@@ -27,3 +27,8 @@ func (repo *Repository) CreateShop(shop Shop) error {
 		shop.ID, shop.Name, shop.OwnerID, shop.Description, shop.HeaderImageURL, shop.CreatedAt, shop.UpdatedAt)
 	return err
 }
+
+func (repo *Repository) EditProductCaption(id uuid.UUID, caption string) error {
+	_, err := repo.db.Exec("UPDATE products SET caption = ? WHERE id = ?", caption, id)
+	return err
+}
