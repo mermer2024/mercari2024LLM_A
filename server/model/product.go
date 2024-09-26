@@ -8,7 +8,6 @@ import (
 
 type Product struct {
 	ID          uuid.UUID `db:"id"`
-	ShopID      uuid.UUID `db:"shop_id"`
 	Name        string    `db:"name"`
 	Description string    `db:"description"`
 	Price       float32   `db:"price"`
@@ -24,28 +23,47 @@ func (repo *Repository) GetProduct(id uuid.UUID) (Product, error) {
 	return product, err
 }
 
-func (repo *Repository) CreateProduct(product Product) error {
-	tx := repo.db.MustBegin()
-	_, err := tx.Exec("INSERT INTO products (id, shop_id, name, description, price, stock, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		product.ID, product.ShopID, product.Name, product.Description, product.Price, product.Stock, product.ImageURL, product.CreatedAt, product.UpdatedAt)
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-	_, err = tx.Exec("INSERT INTO shop_product_maps (shop_id, product_id) VALUES (?, ?)",
-		product.ShopID, product.ID)
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
-	return tx.Commit()
-}
+// func (repo *Repository) CreateProduct(product Product) error {
+// 	tx := repo.db.MustBegin()
+// 	_, err := tx.Exec("INSERT INTO products (id, name, description, price, stock, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+// 		product.ID, product.Name, product.Description, product.Price, product.Stock, product.ImageURL, product.CreatedAt, product.UpdatedAt)
+// 	if err != nil {
+// 		tx.Rollback()
+// 		return err
+// 	}
+// 	_, err = tx.Exec("INSERT INTO shop_product_maps (shop_id, product_id) VALUES (?, ?)",
+// 		product.ShopID, product.ID)
+// 	if err != nil {
+// 		tx.Rollback()
+// 		return err
+// 	}
+// 	return tx.Commit()
+// }
 
 func (repo *Repository) BulkCreateProducts(products []Product) error {
 	tx := repo.db.MustBegin()
 	for _, product := range products {
-		_, err := tx.Exec("INSERT INTO products (id, shop_id, name, description, price, stock, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-			product.ID, product.ShopID, product.Name, product.Description, product.Price, product.Stock, product.ImageURL, product.CreatedAt, product.UpdatedAt)
+		_, err := tx.Exec("INSERT INTO products (id, name, description, price, stock, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+			product.ID, product.Name, product.Description, product.Price, product.Stock, product.ImageURL, product.CreatedAt, product.UpdatedAt)
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+	return tx.Commit()
+}
+
+func (repo *Repository) BulkCreateProductsWithShopId(products []Product, shopID uuid.UUID, mapsID uuid.UUID) error {
+	tx := repo.db.MustBegin()
+	for _, product := range products {
+		_, err := tx.Exec("INSERT INTO products (id, name, description, price, stock, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			product.ID, product.Name, product.Description, product.Price, product.Stock, product.ImageURL, product.CreatedAt, product.UpdatedAt)
+		if err != nil {
+			tx.Rollback()
+			return err
+		}
+		_, err = tx.Exec("INSERT INTO shop_product_maps (id, shop_id, product_id) VALUES (?, ?, ?)",
+			mapsID, shopID, product.ID)
 		if err != nil {
 			tx.Rollback()
 			return err

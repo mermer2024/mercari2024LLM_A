@@ -51,6 +51,8 @@ func (h *Handler) PostMatchShops(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
+	log.Println(shopIds)
+
 	shopList, err := h.repo.GetShopsByIDs(shopIds)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
@@ -71,18 +73,24 @@ func (h *Handler) PostMatchShops(ctx echo.Context) error {
 }
 
 type outputJsonText struct {
-	ID              string `json:"id"`
-	ProductName     string `json:"productName"`
-	PriceAtPurchase int    `json:"priceAtPurchase"`
-	PurchaseDate    string `json:"purchaseDate"`
+	ShopId             string `json:"shop_id"`
+	RecommendationRate string `json:"recommendation_rate"`
+	Reason             string `json:"reason"`
 }
 
 func convertJsonTextToShopIdList(text string) ([]uuid.UUID, error) {
+	// textの最初の行と最後の行が```jsonで囲まれている場合、それを削除する
+	if len(text) > 6 && text[:6] == "```json" {
+		text = text[6:]
+	}
+	if len(text) > 3 && text[len(text)-3:] == "```" {
+		text = text[:len(text)-3]
+	}
 	var data []outputJsonText
 	// JSON文字列をoutputJsonTextのスライスに変換
 	err := json.Unmarshal([]byte(text), &data)
 	if err != nil {
-		// log.Fatalf("Failed to parse JSON: %v", err)
+		log.Printf("Failed to parse JSON: %v", err)
 		return nil, err
 	}
 
@@ -90,9 +98,14 @@ func convertJsonTextToShopIdList(text string) ([]uuid.UUID, error) {
 
 	// 変換したデータをuuidのリストにする
 	for _, d := range data {
-		id, err := uuid.Parse(d.ID)
+		id, err := uuid.Parse(d.ShopId)
 		if err != nil {
-			return nil, err
+			id, err = uuid.Parse("0" + d.ShopId)
+			if err != nil {
+				log.Println(d.ShopId)
+				log.Println("Failed to parse UUID")
+				return nil, err
+			}
 		}
 		shopIdList = append(shopIdList, id)
 	}

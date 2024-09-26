@@ -52,3 +52,8 @@ func (repo *Repository) DeleteShopProductMapByProductID(productID int) error {
 	_, err := repo.db.Exec("DELETE FROM shop_product_maps WHERE product_id = ?", productID)
 	return err
 }
+
+func (repo *Repository) UpdateShopDescription(shopID uuid.UUID, description string) error {
+	_, err := repo.db.Exec("UPDATE shops SET description = ? WHERE id = ?", description, shopID)
+	return err
+}

@@ -2,12 +2,26 @@
 Please recommend a select shop to the user.
 Below, I will list information for both [user's purchase history] and [select shop description].
 Display the top 3 select shops by recommendation rate and shop ID, ranked in order of the highest recommendation rate in Japanese.
+Do not surround with ```.
 
 OUTPUT FORMAT:
-{
-    "shop_id":XXXXX,
-    "recommendation_rate":XXX,
-    "reason":"このショップは..."
-}
+[
+    {
+        "shop_id": "XXXXX",
+        "recommendation_rate": "XXX",
+        "reason":"このショップは..."
+    },
+    {
+        "shop_id": "XXXXX",
+        "recommendation_rate": "XXX",
+        "reason": "このショップは..."
+    },
+    {
+        "shop_id": "XXXXX",
+        "recommendation_rate": "XXX",
+        "reason": "このショップは..."
+    }
+]
+
 
 ----
