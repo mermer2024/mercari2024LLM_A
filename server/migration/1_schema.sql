@@ -15,6 +15,7 @@ CREATE TABLE `shops` (
     `id` VARCHAR(36) NOT NULL,
     `name` VARCHAR(255) NOT NULL,
     `owner_id` VARCHAR(36) NOT NULL,
+    `caption` TEXT,
     `description` TEXT,
     `header_image_url` TEXT,
     `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
