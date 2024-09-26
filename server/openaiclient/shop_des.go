@@ -2,6 +2,7 @@ package openaiclient
 
 import (
 	"context"
+	"strconv"
 
 	_ "embed"
 
@@ -16,8 +17,9 @@ var systemPromptForShopDescription string
 func (c *Client) ShopDescription(ctx context.Context, products []model.Product) (string, error) {
 	// []model.Productをつなげて文字列にする
 	var productsStr string
+	productsStr = "id_,name,price,created,updated,thumbnails,description\n"
 	for _, product := range products {
-		productsStr += product.Name + "\n" + product.Description + "\n"
+		productsStr += product.ID.String() + "," + strconv.FormatFloat(float64(product.Price), 'f', 2, 32) + "," + product.CreatedAt.String() + "," + product.UpdatedAt.String() + "," + product.ImageURL + "," + product.Description + "\n"
 	}
 
 	req := openai.ChatCompletionRequest{

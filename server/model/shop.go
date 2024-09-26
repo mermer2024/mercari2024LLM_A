@@ -32,3 +32,18 @@ func (repo *Repository) EditProductCaption(id uuid.UUID, caption string) error {
 	_, err := repo.db.Exec("UPDATE products SET caption = ? WHERE id = ?", caption, id)
 	return err
 }
+
+func (repo *Repository) GetShopDescriptionsAll() ([]Shop, error) {
+	var idAndDescriptions []Shop
+	err := repo.db.Select(&idAndDescriptions, "SELECT id, description FROM shops")
+	if err != nil {
+		return nil, err
+	}
+	return idAndDescriptions, nil
+}
+
+func (repo *Repository) GetShopsByIDs(shopIDs []uuid.UUID) ([]Shop, error) {
+	var shops []Shop
+	err := repo.db.Select(&shops, "SELECT * FROM shops WHERE id IN (?)", shopIDs)
+	return shops, err
+}

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -23,34 +24,51 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 
 	shopIdUUID, err := uuid.Parse(shopId)
 	if err != nil {
-		return ctx.JSON(http.StatusBadRequest, err)
+		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid shop ID"})
 	}
 
 	var products []model.Product
 
 	for _, product := range req.Products {
+		var description string
+		if product.Description != nil {
+			description = *product.Description
+		} else {
+			description = "No description provided" // デフォルト値を設定
+		}
+
 		products = append(products, model.Product{
 			ID:          uuid.New(),
 			ShopID:      shopIdUUID,
 			Name:        product.Name,
-			Description: *product.Description,
+			Description: description, // nilチェック後の値を代入
 			Price:       product.Price,
 			CreatedAt:   time.Now(),
 		})
 	}
 
+	log.Println(products)
+
 	err = h.repo.BulkCreateProducts(products)
 	if err != nil {
+		log.Printf("failed to create products: %v", err)
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
 	productList, err := h.repo.GetProductListByShopID(shopIdUUID)
 	if err != nil {
+		log.Printf("failed to get product list: %v", err)
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
 	// TODO:shopのdescriptionをLLMで変更する。
-	h.client.ShopDescription(ctx.Request().Context(), productList)
+	text, err := h.client.ShopDescription(ctx.Request().Context(), productList)
+	if err != nil {
+		log.Printf("failed to get shop description: %v", err)
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+
+	log.Println(text)
 
 	return ctx.JSON(http.StatusOK, nil)
 }
