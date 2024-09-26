@@ -10,7 +10,7 @@ const ShopsNavbar = () => {
   };
 
   return (
-    <nav className='fixed top-0 w-full'>
+    <nav className='fixed top-0 w-full z-10'>
       <div className="flex items-center justify-between px-4 py-5 relative pt-12 border-b-[0.4px] [border-bottom-style:solid] border-[#818181] bg-white">
         <Link href="/shoplist/featured">
           <div 

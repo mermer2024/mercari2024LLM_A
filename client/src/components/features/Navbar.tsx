@@ -14,7 +14,7 @@ const navItems: NavItem[] = [
 
 const Navbar = () => {
   return (
-    <nav className="fixed bottom-0 w-full bg-white border-t border-gray-200">
+    <nav className="fixed bottom-0 w-full bg-white border-t border-gray-200 z-10">
       <div className="flex justify-around py-2">
         {navItems.map((item: NavItem) => (
           <a

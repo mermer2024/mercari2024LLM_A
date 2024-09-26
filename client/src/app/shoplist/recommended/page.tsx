@@ -5,7 +5,7 @@ import React from "react";
 
 export default function page() {
   return(
-    <div className="flex flex-col justify-center p-4 gap-[19px]">
+    <div className="flex flex-col justify-center p-4 gap-[19px] items-center">
       {dummyShops.map((shop) => {
         return <ShopCard shopData={shop} userData={user}/>;
       })}

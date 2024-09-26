@@ -12,7 +12,7 @@ interface ShopCardProps {
 
 const ShopHeader: React.FC<ShopCardProps> = ({ shopData, userData }) => {
   return (
-    <div className='w-full flex flex-col items-center mb-[37px]'>
+    <div className='w-full flex flex-col items-center mb-[37px] mt-[97px]'>
       <PageHeader title={shopData.name} />
       <img
         src={shopData.headerImage}

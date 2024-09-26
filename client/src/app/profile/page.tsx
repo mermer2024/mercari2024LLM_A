@@ -5,7 +5,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>
+    <div className='mt-[112px]'>
       <PageHeader title='購入した商品' />
       <div className='flex gap-[17px] my-[13px] ml-[21px]'>
         <input type="checkbox" id="name"/>
