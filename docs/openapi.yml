@@ -482,9 +482,17 @@ components:
           type: integer
         priceAtPurchase:
           type: number
-        createdAt:
-          type: string 
-          format: date-time 
+        purchaseDate:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - productId
+        - productName
+        - productQuantity
+        - priceAtPurchase
+        - purchaseDate
 
     PurchaseHistories:
       type: array
