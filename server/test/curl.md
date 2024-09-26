@@ -43,6 +43,10 @@ curl -X PUT "http://localhost:8080/api/shops/80BEAB1C-E47C-4B94-B1F5-F82941C6C7F
 ```
 
 ```bash
+curl -X GET "http://localhost:8080/api/shops/80BEAB1C-E47C-4B94-B1F5-F82941C6C7F7"
+```
+
+```bash
 curl -X POST "http://localhost:8080/api/shops/80BEAB1C-E47C-4B94-B1F5-F82941C6C7F7/follow" \
   -H "Content-Type: application/json" \
   -d '{

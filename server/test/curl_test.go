@@ -174,6 +174,37 @@ func TestMatchShops(t *testing.T) {
 	t.Logf("Number of shops matched: %d", len(shops))
 }
 
+// Test for GET /api/shops/{shopId}
+func TestGetShopByID(t *testing.T) {
+	shopID := "80beab1c-e47c-4b94-b1f5-f82941c6c7f7"
+
+	resp, err := sendGetRequest("/api/shops/" + shopID)
+	if err != nil {
+		t.Fatalf("sendGetRequest error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status code 200, got %d", resp.StatusCode)
+	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("Failed to read response body: %v", err)
+	}
+
+	var shop Shop
+	if err := json.Unmarshal(bodyBytes, &shop); err != nil {
+		t.Fatalf("Failed to unmarshal response body into Shop: %v", err)
+	}
+
+	if shop.ID != shopID {
+		t.Fatalf("Expected shop ID %s, got %s", shopID, shop.ID)
+	}
+
+	t.Logf("Retrieved shop: %+v", shop)
+}
+
 // Test for POST /api/shop
 func TestCreateShop(t *testing.T) {
 	payload := map[string]interface{}{
