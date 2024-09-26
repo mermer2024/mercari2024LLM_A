@@ -13,6 +13,7 @@ type Shop struct {
 	Name           string    `db:"name"`
 	OwnerID        uuid.UUID `db:"owner_id"`
 	Description    string    `db:"description"`
+	Caption        string    `db:"caption"`
 	HeaderImageURL string    `db:"header_image_url"`
 	CreatedAt      time.Time `db:"created_at"`
 	UpdatedAt      time.Time `db:"updated_at"`
