@@ -166,6 +166,9 @@ type ServerInterface interface {
 	// (POST /shop)
 	PostShop(ctx echo.Context) error
 
+	// (GET /shops/{shopId})
+	GetShopsShopId(ctx echo.Context, shopId string) error
+
 	// (PUT /shops/{shopId})
 	PutShopsShopId(ctx echo.Context, shopId string) error
 
@@ -256,6 +259,22 @@ func (w *ServerInterfaceWrapper) PostShop(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.PostShop(ctx)
+	return err
+}
+
+// GetShopsShopId converts echo context to params.
+func (w *ServerInterfaceWrapper) GetShopsShopId(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "shopId" -------------
+	var shopId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "shopId", ctx.Param("shopId"), &shopId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter shopId: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.GetShopsShopId(ctx, shopId)
 	return err
 }
 
@@ -446,6 +465,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.GET(baseURL+"/recommendations/today", wrapper.GetRecommendationsToday)
 	router.GET(baseURL+"/search_shops", wrapper.GetSearchShops)
 	router.POST(baseURL+"/shop", wrapper.PostShop)
+	router.GET(baseURL+"/shops/:shopId", wrapper.GetShopsShopId)
 	router.PUT(baseURL+"/shops/:shopId", wrapper.PutShopsShopId)
 	router.POST(baseURL+"/shops/:shopId/follow", wrapper.PostShopsShopIdFollow)
 	router.POST(baseURL+"/shops/:shopId/products", wrapper.PostShopsShopIdProducts)

@@ -21,7 +21,7 @@ type Shop struct {
 
 func (repo *Repository) GetShop(id uuid.UUID) (Shop, error) {
 	var shop Shop
-	err := repo.db.Get(&shop, "SELECT * FROM shops WHERE id = ?", id)
+	err := repo.db.Get(&shop, "SELECT id, name, owner_id, description, header_image_url, created_at, updated_at FROM shops WHERE id = ?", id)
 	return shop, err
 }
 

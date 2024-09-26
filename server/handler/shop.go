@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -10,6 +11,29 @@ import (
 	"github.com/mermer2024/mercari2024LLM_A/api"
 	"github.com/mermer2024/mercari2024LLM_A/model"
 )
+
+// (GET /shops/{shopId})
+func (h *Handler) GetShopsShopId(ctx echo.Context, shopId string) error {
+	shopID, err := uuid.Parse(shopId)
+	if err != nil {
+		log.Println(err)
+		return ctx.JSON(http.StatusBadRequest, err)
+	}
+	shop, err := h.repo.GetShop(shopID)
+	if err != nil {
+		log.Println(err)
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+	res := api.Shop{
+		Description: shop.Description,
+		Followers:   nil,
+		HeaderImage: &shop.HeaderImageURL,
+		Id:          shop.ID.String(),
+		Name:        shop.Name,
+		OwnerId:     shop.OwnerID.String(),
+	}
+	return ctx.JSON(http.StatusOK, res)
+}
 
 // (GET /search_shops)
 func (h *Handler) GetSearchShops(ctx echo.Context, params api.GetSearchShopsParams) error {

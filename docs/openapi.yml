@@ -90,6 +90,23 @@ paths:
         required: true
         schema:
           type: string
+    get:
+      description: Get shops by Id.
+      tags:
+        - Shop
+      parameters:
+        - name: shopId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Get shop successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shop'
     put:
       description: Edit an existing select shop.
       tags:
