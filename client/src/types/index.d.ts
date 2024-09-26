@@ -1,7 +1,8 @@
 export type NavItem = {
   title: string
   href: string
-  icon?: IconDefinition;
+  icon?: string;
+  activeIcon?: string;
 }
 
 export type Shop = {
