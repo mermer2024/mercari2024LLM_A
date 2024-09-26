@@ -40,8 +40,6 @@ func (h *Handler) PostShop(ctx echo.Context) error {
 		// HeaderImageURL: req.HeaderImageURL,
 	}
 
-	// TODO:shopのdescriptionをLLLで作る。
-
 	err = h.repo.CreateShop(newShop)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)

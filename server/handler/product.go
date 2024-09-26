@@ -44,14 +44,14 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
-	// TODO:shopのdescriptionを変更する。
+	// TODO:shopのdescriptionをLLMで変更する。
 
 	return ctx.JSON(http.StatusOK, nil)
 }
 
 // (POST /shops/{shopId}/products/{productId}/caption)
 func (h *Handler) PostShopsShopIdProductsProductIdCaption(ctx echo.Context, shopId string, productId string) error {
-	// TODO: caption生成
+	// TODO: caption生成をLLMで行う
 	// h.repo.EditProductCaption()
 	return ctx.JSON(http.StatusInternalServerError, "Not implemented")
 }
