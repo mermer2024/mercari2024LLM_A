@@ -8,7 +8,7 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ productData }) => {
   return (
     <div className='w-[116px]'>
-      <h3 className='font-bold text-[14px] text-center'>{productData.caption}</h3>
+      {/* <h3 className='font-bold text-[14px] text-center'>{productData.caption}</h3> */}
       <div className='relative'>
         <img
           src={productData.image}

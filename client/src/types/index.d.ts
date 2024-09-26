@@ -18,8 +18,8 @@ export type Product = {
   name: string;
   price: number;
   stock: number;
-  caption?: string;
-  image: string;
+  description?: string;
+  imageUrl: string;
 };
 
 export type User = {

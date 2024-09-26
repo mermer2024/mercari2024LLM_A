@@ -33,7 +33,7 @@ export const dummyProducts: Product[] = [
     name: "デジタル一眼レフカメラ",
     price: 75000,
     stock: 10,
-    caption: "イチオシ！",
+    caption: "あまり有名なブランドではないけれど、状態が良く90年代の気分を思い出せそうな商品です。3000円とお安いので、なくなる前にお急ぎください！",
     image: "/item1.png",
   },
   {
