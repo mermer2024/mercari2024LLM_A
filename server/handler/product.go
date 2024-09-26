@@ -26,6 +26,7 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid shop ID"})
 	}
+	log.Println("askfa")
 
 	var products []model.Product
 
@@ -37,19 +38,28 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 			description = "No description provided" // デフォルト値を設定
 		}
 
+		var imageUrl string
+		if product.ImageUrl != nil {
+			imageUrl = *product.ImageUrl
+		} else {
+			imageUrl = "No image provided" // デフォルト値を設定
+		}
+
 		products = append(products, model.Product{
 			ID:          uuid.New(),
-			ShopID:      shopIdUUID,
 			Name:        product.Name,
-			Description: description, // nilチェック後の値を代入
+			Description: description,
 			Price:       product.Price,
+			Stock:       product.Stock,
+			ImageURL:    imageUrl,
 			CreatedAt:   time.Now(),
+			UpdatedAt:   time.Now(),
 		})
 	}
 
 	log.Println(products)
 
-	err = h.repo.BulkCreateProducts(products)
+	err = h.repo.BulkCreateProductsWithShopId(products, shopIdUUID, uuid.New())
 	if err != nil {
 		log.Printf("failed to create products: %v", err)
 		return ctx.JSON(http.StatusInternalServerError, err)
@@ -69,6 +79,13 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 	}
 
 	log.Println(text)
+
+	// shopのdescriptionを更新
+	err = h.repo.UpdateShopDescription(shopIdUUID, text)
+	if err != nil {
+		log.Printf("failed to update shop description: %v", err)
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
 
 	return ctx.JSON(http.StatusOK, nil)
 }

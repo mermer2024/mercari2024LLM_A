@@ -15,8 +15,22 @@ import (
 func (h *Handler) GetSearchShops(ctx echo.Context, params api.GetSearchShopsParams) error {
 
 	// TODO: shopの検索をする(not LLM)
+	shops, err := h.repo.GetShopsAll()
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+	var resShops []*api.Shop
+	for _, shop := range shops {
+		resShops = append(resShops, &api.Shop{
+			Description: shop.Description,
+			HeaderImage: &shop.HeaderImageURL,
+			Id:          shop.ID.String(),
+			Name:        shop.Name,
+			OwnerId:     shop.OwnerID.String(),
+		})
+	}
 
-	return ctx.JSON(http.StatusInternalServerError, "Not implemented")
+	return ctx.JSON(http.StatusInternalServerError, resShops)
 }
 
 // (POST /shop)

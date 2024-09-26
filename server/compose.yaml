@@ -32,8 +32,6 @@ services:
       - "3306:3306"
     expose:
       - "3306"
-    volumes:
-      - db_data:/var/lib/mysql
     healthcheck:
       test:
         [
@@ -55,6 +53,3 @@ services:
     depends_on:
       db:
         condition: service_healthy
-
-volumes:
-  db_data:

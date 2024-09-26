@@ -1,6 +1,8 @@
 package model
 
 import (
+	"log"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -28,6 +30,12 @@ func (repo *Repository) CreateShop(shop Shop) error {
 	return err
 }
 
+func (repo *Repository) EditShop(shop Shop) error {
+	_, err := repo.db.Exec("UPDATE shops SET name = ?, description = ?, header_image_url = ?, updated_at = ? WHERE id = ?",
+		shop.Name, shop.Description, shop.HeaderImageURL, shop.UpdatedAt, shop.ID)
+	return err
+}
+
 func (repo *Repository) EditProductCaption(id uuid.UUID, caption string) error {
 	_, err := repo.db.Exec("UPDATE products SET caption = ? WHERE id = ?", caption, id)
 	return err
@@ -44,6 +52,50 @@ func (repo *Repository) GetShopDescriptionsAll() ([]Shop, error) {
 
 func (repo *Repository) GetShopsByIDs(shopIDs []uuid.UUID) ([]Shop, error) {
 	var shops []Shop
-	err := repo.db.Select(&shops, "SELECT * FROM shops WHERE id IN (?)", shopIDs)
+
+	// Convert UUIDs to strings
+	stringShopIDs := make([]string, len(shopIDs))
+	for i, id := range shopIDs {
+		stringShopIDs[i] = id.String()
+	}
+
+	// Create placeholders for the query
+	placeholders := make([]string, len(stringShopIDs))
+	for i := range stringShopIDs {
+		placeholders[i] = "?"
+	}
+
+	// Construct the SQL query
+	query := "SELECT * FROM shops WHERE id IN (" + strings.Join(placeholders, ", ") + ")"
+
+	// Execute the query with the stringShopIDs as arguments
+	err := repo.db.Select(&shops, query, convertToInterfaceSlice(stringShopIDs)...)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return shops, nil
+}
+
+// convertToInterfaceSlice converts a slice of strings to a slice of empty interfaces
+func convertToInterfaceSlice(slice []string) []interface{} {
+	result := make([]interface{}, len(slice))
+	for i, v := range slice {
+		result[i] = v
+	}
+	return result
+}
+
+func (repo *Repository) GetShopsAll() ([]Shop, error) {
+	var shops []Shop
+	err := repo.db.Select(&shops, "SELECT * FROM shops")
+	log.Println(err)
+	return shops, err
+}
+
+func (repo *Repository) GetShopsAllNoDescription() ([]Shop, error) {
+	var shops []Shop
+	err := repo.db.Select(&shops, "SELECT * FROM shops WHERE description IS NULL")
 	return shops, err
 }
