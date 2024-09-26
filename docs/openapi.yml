@@ -327,6 +327,28 @@ paths:
                   success:
                     type: boolean
 
+  /users/{userId}/purchase_histories:
+    get:
+      description: Get purchase history by user id.
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        
+      responses:
+        200:
+          description: Get purchase history successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseHistories'
+
+
+
 components:
   schemas:
     PostOpenAIRequest:
@@ -444,3 +466,35 @@ components:
       properties:
         shop:
           $ref: '#/components/schemas/Shop'
+
+    PurchaseHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        productId:
+          type: string
+        productName:
+          type: string
+        productQuantity:
+          type: integer
+        priceAtPurchase:
+          type: number
+        purchaseDate:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - productId
+        - productName
+        - productQuantity
+        - priceAtPurchase
+        - purchaseDate
+
+    PurchaseHistories:
+      type: array
+      items:
+        $ref: '#/components/schemas/PurchaseHistory' 
