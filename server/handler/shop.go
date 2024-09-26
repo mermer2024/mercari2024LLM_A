@@ -35,6 +35,11 @@ func (h *Handler) PostShopsShopIdFollow(ctx echo.Context, shopId string) error {
 	return nil
 }
 
+// (POST /shops/{shopId}/products)
+func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error {
+	return nil
+}
+
 // (POST /shops/{shopId}/products/{productId}/caption)
 func (h *Handler) PostShopsShopIdProductsProductIdCaption(ctx echo.Context, shopId string, productId string) error {
 	return nil
