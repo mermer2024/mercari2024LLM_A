@@ -64,7 +64,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Shop'
 
-  /shops:
+  /shop:
     post:
       description: Creates a new select shop.
       tags:
@@ -424,6 +424,10 @@ components:
           type: number
         stock:
           type: integer
+        description:
+          type: string
+        imageUrl:
+          type: string
       required:
         - id
         - name
