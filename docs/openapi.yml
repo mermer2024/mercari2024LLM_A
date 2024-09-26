@@ -52,13 +52,8 @@ paths:
               properties:
                 userId:
                   type: string
-                interests:
-                  type: array
-                  items:
-                    type: string
               required:
                 - userId
-                - interests
       responses:
         200:
           description: Successful matching
@@ -147,7 +142,7 @@ paths:
                     type: boolean
 
   /shops/{shopId}/unfollow:
-    delete:
+    post:
       description: Unfollow a select shop.
       tags:
         - Follow
@@ -157,11 +152,14 @@ paths:
           required: true
           schema:
             type: string
-        - name: userId
-          in: query
-          required: true
-          schema:
-            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
       responses:
         200:
           description: Successfully unfollowed the shop
@@ -366,6 +364,8 @@ components:
           type: string
         description:
           type: string
+        headerImage:
+          type: string
         followers:
           type: integer
       required:
@@ -393,11 +393,14 @@ components:
     EditShopRequest:
       type: object
       properties:
+        name:
+          type: string
         description:
           type: string
         headerImage:
           type: string
       required:
+        - name
         - description
 
     ProductList:
@@ -437,5 +440,3 @@ components:
       properties:
         shop:
           $ref: '#/components/schemas/Shop'
-        product:
-          $ref: '#/components/schemas/Product'
