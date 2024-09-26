@@ -84,6 +84,11 @@ type PostShopsShopIdFollowJSONBody struct {
 	UserId string `json:"userId"`
 }
 
+// PostShopsShopIdProductsJSONBody defines parameters for PostShopsShopIdProducts.
+type PostShopsShopIdProductsJSONBody struct {
+	Products []Product `json:"products"`
+}
+
 // PostShopsShopIdProductsProductIdCaptionJSONBody defines parameters for PostShopsShopIdProductsProductIdCaption.
 type PostShopsShopIdProductsProductIdCaptionJSONBody struct {
 	Caption string `json:"caption"`
@@ -114,6 +119,9 @@ type PutShopsShopIdJSONRequestBody = EditShopRequest
 // PostShopsShopIdFollowJSONRequestBody defines body for PostShopsShopIdFollow for application/json ContentType.
 type PostShopsShopIdFollowJSONRequestBody PostShopsShopIdFollowJSONBody
 
+// PostShopsShopIdProductsJSONRequestBody defines body for PostShopsShopIdProducts for application/json ContentType.
+type PostShopsShopIdProductsJSONRequestBody PostShopsShopIdProductsJSONBody
+
 // PostShopsShopIdProductsProductIdCaptionJSONRequestBody defines body for PostShopsShopIdProductsProductIdCaption for application/json ContentType.
 type PostShopsShopIdProductsProductIdCaptionJSONRequestBody PostShopsShopIdProductsProductIdCaptionJSONBody
 
@@ -143,6 +151,9 @@ type ServerInterface interface {
 
 	// (POST /shops/{shopId}/follow)
 	PostShopsShopIdFollow(ctx echo.Context, shopId string) error
+
+	// (POST /shops/{shopId}/products)
+	PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 
 	// (POST /shops/{shopId}/products/{productId}/caption)
 	PostShopsShopIdProductsProductIdCaption(ctx echo.Context, shopId string, productId string) error
@@ -254,6 +265,22 @@ func (w *ServerInterfaceWrapper) PostShopsShopIdFollow(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshaled arguments
 	err = w.Handler.PostShopsShopIdFollow(ctx, shopId)
+	return err
+}
+
+// PostShopsShopIdProducts converts echo context to params.
+func (w *ServerInterfaceWrapper) PostShopsShopIdProducts(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "shopId" -------------
+	var shopId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "shopId", ctx.Param("shopId"), &shopId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter shopId: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostShopsShopIdProducts(ctx, shopId)
 	return err
 }
 
@@ -391,6 +418,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.POST(baseURL+"/shops", wrapper.PostShops)
 	router.PUT(baseURL+"/shops/:shopId", wrapper.PutShopsShopId)
 	router.POST(baseURL+"/shops/:shopId/follow", wrapper.PostShopsShopIdFollow)
+	router.POST(baseURL+"/shops/:shopId/products", wrapper.PostShopsShopIdProducts)
 	router.POST(baseURL+"/shops/:shopId/products/:productId/caption", wrapper.PostShopsShopIdProductsProductIdCaption)
 	router.POST(baseURL+"/shops/:shopId/products/:productId/sold_out", wrapper.PostShopsShopIdProductsProductIdSoldOut)
 	router.GET(baseURL+"/shops/:shopId/search_products", wrapper.GetShopsShopIdSearchProducts)
