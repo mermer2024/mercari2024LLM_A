@@ -6,6 +6,7 @@ import PurchaseCard from "@/components/features/PurchaseCard";
 import React, { useEffect, useState } from "react";
 import { Purchase } from "@/types";
 import { getHistories } from "./action";
+import LoadingSpinner from "@/components/features/LoadingSpinner";
 
 const PurchaseHistoriesPage = () => {
   const [histories, setHistories] = useState<Purchase[]>([]);
@@ -41,7 +42,7 @@ const PurchaseHistoriesPage = () => {
       </div>
       {/* ローディング中またはエラー時の表示 */}
       {loading ? (
-        <div>Loading...</div>
+        <LoadingSpinner />
       ) : error ? (
         <div>{error}</div>
       ) : histories.length === 0 ? (

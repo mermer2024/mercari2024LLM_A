@@ -6,6 +6,7 @@ import { matchShops } from "./action"; // API 呼び出し関数をインポー�
 import ShopCard from "@/components/features/ShopCard";
 import SelectButton from "@/components/features/SelectButton";
 import { user } from "@/components/dummyData"; // 仮のユーザーデータ
+import LoadingSpinner from "@/components/features/LoadingSpinner";
 
 export default function Page() {
   const [shops, setShops] = useState<Shop[]>([]); // ショップデータの状態
@@ -36,7 +37,7 @@ export default function Page() {
   return (
     <div className="flex flex-col justify-center p-4 gap-[19px] items-center">
       {loading ? ( // ローディング中の表示
-        <div>Loading...</div>
+        <LoadingSpinner />
       ) : error ? ( // エラー発生時の表示
         <div>{error}</div>
       ) : (

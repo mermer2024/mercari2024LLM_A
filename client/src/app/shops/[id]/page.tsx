@@ -7,6 +7,7 @@ import { searchProducts } from "./action"; // API呼び出し関数のインポ�
 import ProductView from "@/components/features/ProductView"; // 商品表示コンポーネントのインポート
 import ShopHeader from "@/components/features/ShopHeader"; // ショップヘッダーコンポーネントのインポート
 import { dummyShops, user } from "@/components/dummyData"; // 仮のユーザーデータ
+import LoadingSpinner from "@/components/features/LoadingSpinner";
 
 const Page = ({ params }: { params: { id: string } }) => {
   const [shop, setShop] = useState<Shop | null>(dummyShops[0]); // ショップデータの状態
@@ -40,7 +41,7 @@ const Page = ({ params }: { params: { id: string } }) => {
   }, [shopId]); // shopIdが変わったときにも再取得
 
   if (loading) {
-    return <div>Loading...</div>; // ローディング中の表示
+    return <LoadingSpinner />; // ローディング中の表示
   }
 
   if (error) {
