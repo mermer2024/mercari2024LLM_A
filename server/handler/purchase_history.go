@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/google/uuid"
@@ -8,8 +9,9 @@ import (
 	"github.com/mermer2024/mercari2024LLM_A/api"
 )
 
-// (GET /users/{userId}/purchase_histories)
-func (h *Handler) GetPurchaseHistories(ctx echo.Context, userId string) error {
+// (GET /users/{userId}/purchase_history)
+func (h *Handler) GetUsersUserIdPurchaseHistories(ctx echo.Context, userId string) error {
+	fmt.Println("Hello ")
 	userID, err := uuid.Parse(userId)
 	if err != nil {
 		return ctx.JSON(http.StatusBadRequest, err)
