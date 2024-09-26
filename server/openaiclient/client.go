@@ -12,7 +12,7 @@ type Client struct {
 	apiClient *openai.Client
 }
 
-//go:embed prompt.txt
+//go:embed prompt/prompt.txt
 var systemPrompt string
 
 func New(apiClient *openai.Client) *Client {
