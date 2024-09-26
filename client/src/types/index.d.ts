@@ -19,3 +19,9 @@ export type Product = {
   price: number;
   stock: number;
 };
+
+export type User = {
+  id: string;
+  name: string;
+  iconImage: string;
+}

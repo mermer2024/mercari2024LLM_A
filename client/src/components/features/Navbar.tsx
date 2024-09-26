@@ -8,7 +8,7 @@ const navItems: NavItem[] = [
   { title: 'さがす', href: '/search', icon: Icons.search },
   { title: '出品', href: '/post', icon: Icons.post },
   { title: '支払い', href: '/payment', icon: Icons.payment },
-  { title: 'ショップ', href: '/shops/recommended', icon: Icons.shop },
+  { title: 'ショップ', href: '/shoplist/recommended', icon: Icons.shop },
   { title: 'マイページ', href: '/profile', icon: Icons.profile },
 ];
 

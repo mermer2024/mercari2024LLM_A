@@ -1,20 +1,20 @@
-import { Product, Shop } from "@/types";
+import { Product, Shop, User } from "@/types";
 
 export const dummyShops: Shop[] = [
   {
     id: "shop-1",
-    name: "カメラショップ",
+    name: "ビンテージ家具セレクト",
     ownerId: "user-1",
-    description: "高品質なカメラやレンズを取り揃えた専門店です。",
-    headerImage: "https://example.com/images/shop1.jpg",
+    description: "ビンテージ物は味があっていいですよね〜。ミッドセンチュリーの家具を主にセレクトしていますので、ぜひ一度、訪れてみてください！",
+    headerImage: "/header1.png",
     followers: 120,
   },
   {
     id: "shop-2",
-    name: "ゲームストア",
+    name: "旅人まるの北欧小物ショップ",
     ownerId: "user-2",
-    description: "最新のゲーム機とソフトを取り扱っています。",
-    headerImage: "https://example.com/images/shop2.jpg",
+    description: "世界中を旅している私「まる」が厳選した、北欧小物を集めています。中古だからこそ味わえる良さをぜひ体感してみてください！",
+    headerImage: "/header2.png",
     followers: 350,
   },
   {
@@ -22,7 +22,7 @@ export const dummyShops: Shop[] = [
     name: "スポーツ用品店",
     ownerId: "user-3",
     description: "アウトドアやフィットネス用のスポーツ用品を販売しています。",
-    headerImage: "https://example.com/images/shop3.jpg",
+    headerImage: "/header2.png",
     followers: 200,
   },
 ];
@@ -65,4 +65,40 @@ const dummyProducts: Product[] = [
     stock: 25,
   },
 ];
+
+export const user: User = {
+  id: "1",
+  name: "ビンテージ太郎",
+  iconImage: "/icon1.png",
+}
+
+export const users: User[] = [
+  {
+    id: "1",
+    name: "ビンテージ太郎",
+    iconImage: "/icon1.png",
+  },
+  {
+    id: "2",
+    name: "鈴木花子",
+    iconImage: "https://example.com/images/user2.jpg",
+  },
+  {
+    id: "3",
+    name: "佐藤次郎",
+    iconImage: "https://example.com/images/user3.jpg",
+  },
+  {
+    id: "4",
+    name: "高橋優子",
+    iconImage: "https://example.com/images/user4.jpg",
+  },
+  {
+    id: "5",
+    name: "田中一郎",
+    iconImage: "https://example.com/images/user5.jpg",
+  },
+];
+
+
 
