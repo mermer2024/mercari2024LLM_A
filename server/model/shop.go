@@ -66,7 +66,7 @@ func (repo *Repository) GetShopsByIDs(shopIDs []uuid.UUID) ([]Shop, error) {
 	}
 
 	// Construct the SQL query
-	query := "SELECT * FROM shops WHERE id IN (" + strings.Join(placeholders, ", ") + ")"
+	query := "SELECT id, name, owner_id, description, header_image_url, created_at, updated_at FROM shops WHERE id IN (" + strings.Join(placeholders, ", ") + ")"
 
 	// Execute the query with the stringShopIDs as arguments
 	err := repo.db.Select(&shops, query, convertToInterfaceSlice(stringShopIDs)...)
