@@ -24,9 +24,15 @@ func (h *Handler) GetShopsShopId(ctx echo.Context, shopId string) error {
 		log.Println(err)
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
+	follows, err := h.repo.GetFollowsByShopID(shopID)
+	if err != nil {
+		log.Println(err)
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+	followers := len(follows)
 	res := api.Shop{
 		Description: shop.Description,
-		Followers:   nil,
+		Followers:   &followers,
 		HeaderImage: &shop.HeaderImageURL,
 		Id:          shop.ID.String(),
 		Name:        shop.Name,
