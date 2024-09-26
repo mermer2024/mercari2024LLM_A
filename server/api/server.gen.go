@@ -23,7 +23,6 @@ type CreateShopRequest struct {
 type EditShopRequest struct {
 	Description string  `json:"description"`
 	HeaderImage *string `json:"headerImage,omitempty"`
-	Name        string  `json:"name"`
 }
 
 // PostOpenAIRequest defines model for PostOpenAIRequest.
@@ -39,12 +38,10 @@ type PostOpenAIResponse struct {
 
 // Product defines model for Product.
 type Product struct {
-	Description *string `json:"description,omitempty"`
-	Id          string  `json:"id"`
-	ImageUrl    *string `json:"imageUrl,omitempty"`
-	Name        string  `json:"name"`
-	Price       float32 `json:"price"`
-	Stock       int     `json:"stock"`
+	Id    string  `json:"id"`
+	Name  string  `json:"name"`
+	Price float32 `json:"price"`
+	Stock int     `json:"stock"`
 }
 
 // ProductList defines model for ProductList.
@@ -52,7 +49,8 @@ type ProductList = []Product
 
 // Recommendation defines model for Recommendation.
 type Recommendation struct {
-	Shop *Shop `json:"shop,omitempty"`
+	Product *Product `json:"product,omitempty"`
+	Shop    *Shop    `json:"shop,omitempty"`
 }
 
 // RecommendationList defines model for RecommendationList.
@@ -60,12 +58,11 @@ type RecommendationList = []Recommendation
 
 // Shop defines model for Shop.
 type Shop struct {
-	Description string  `json:"description"`
-	Followers   *int    `json:"followers,omitempty"`
-	HeaderImage *string `json:"headerImage,omitempty"`
-	Id          string  `json:"id"`
-	Name        string  `json:"name"`
-	OwnerId     string  `json:"ownerId"`
+	Description string `json:"description"`
+	Followers   *int   `json:"followers,omitempty"`
+	Id          string `json:"id"`
+	Name        string `json:"name"`
+	OwnerId     string `json:"ownerId"`
 }
 
 // ShopList defines model for ShopList.
@@ -73,7 +70,8 @@ type ShopList = []Shop
 
 // PostMatchShopsJSONBody defines parameters for PostMatchShops.
 type PostMatchShopsJSONBody struct {
-	UserId string `json:"userId"`
+	Interests []string `json:"interests"`
+	UserId    string   `json:"userId"`
 }
 
 // GetSearchShopsParams defines parameters for GetSearchShops.
@@ -101,9 +99,9 @@ type GetShopsShopIdSearchProductsParams struct {
 	Keyword *string `form:"keyword,omitempty" json:"keyword,omitempty"`
 }
 
-// PostShopsShopIdUnfollowJSONBody defines parameters for PostShopsShopIdUnfollow.
-type PostShopsShopIdUnfollowJSONBody struct {
-	UserId *string `json:"userId,omitempty"`
+// DeleteShopsShopIdUnfollowParams defines parameters for DeleteShopsShopIdUnfollow.
+type DeleteShopsShopIdUnfollowParams struct {
+	UserId string `form:"userId" json:"userId"`
 }
 
 // PostMatchShopsJSONRequestBody defines body for PostMatchShops for application/json ContentType.
@@ -112,8 +110,8 @@ type PostMatchShopsJSONRequestBody PostMatchShopsJSONBody
 // PostOpenaiJSONRequestBody defines body for PostOpenai for application/json ContentType.
 type PostOpenaiJSONRequestBody = PostOpenAIRequest
 
-// PostShopJSONRequestBody defines body for PostShop for application/json ContentType.
-type PostShopJSONRequestBody = CreateShopRequest
+// PostShopsJSONRequestBody defines body for PostShops for application/json ContentType.
+type PostShopsJSONRequestBody = CreateShopRequest
 
 // PutShopsShopIdJSONRequestBody defines body for PutShopsShopId for application/json ContentType.
 type PutShopsShopIdJSONRequestBody = EditShopRequest
@@ -126,9 +124,6 @@ type PostShopsShopIdProductsJSONRequestBody PostShopsShopIdProductsJSONBody
 
 // PostShopsShopIdProductsProductIdCaptionJSONRequestBody defines body for PostShopsShopIdProductsProductIdCaption for application/json ContentType.
 type PostShopsShopIdProductsProductIdCaptionJSONRequestBody PostShopsShopIdProductsProductIdCaptionJSONBody
-
-// PostShopsShopIdUnfollowJSONRequestBody defines body for PostShopsShopIdUnfollow for application/json ContentType.
-type PostShopsShopIdUnfollowJSONRequestBody PostShopsShopIdUnfollowJSONBody
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
@@ -148,8 +143,8 @@ type ServerInterface interface {
 	// (GET /search_shops)
 	GetSearchShops(ctx echo.Context, params GetSearchShopsParams) error
 
-	// (POST /shop)
-	PostShop(ctx echo.Context) error
+	// (POST /shops)
+	PostShops(ctx echo.Context) error
 
 	// (PUT /shops/{shopId})
 	PutShopsShopId(ctx echo.Context, shopId string) error
@@ -169,8 +164,8 @@ type ServerInterface interface {
 	// (GET /shops/{shopId}/search_products)
 	GetShopsShopIdSearchProducts(ctx echo.Context, shopId string, params GetShopsShopIdSearchProductsParams) error
 
-	// (POST /shops/{shopId}/unfollow)
-	PostShopsShopIdUnfollow(ctx echo.Context, shopId string) error
+	// (DELETE /shops/{shopId}/unfollow)
+	DeleteShopsShopIdUnfollow(ctx echo.Context, shopId string, params DeleteShopsShopIdUnfollowParams) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -232,12 +227,12 @@ func (w *ServerInterfaceWrapper) GetSearchShops(ctx echo.Context) error {
 	return err
 }
 
-// PostShop converts echo context to params.
-func (w *ServerInterfaceWrapper) PostShop(ctx echo.Context) error {
+// PostShops converts echo context to params.
+func (w *ServerInterfaceWrapper) PostShops(ctx echo.Context) error {
 	var err error
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.PostShop(ctx)
+	err = w.Handler.PostShops(ctx)
 	return err
 }
 
@@ -362,8 +357,8 @@ func (w *ServerInterfaceWrapper) GetShopsShopIdSearchProducts(ctx echo.Context) 
 	return err
 }
 
-// PostShopsShopIdUnfollow converts echo context to params.
-func (w *ServerInterfaceWrapper) PostShopsShopIdUnfollow(ctx echo.Context) error {
+// DeleteShopsShopIdUnfollow converts echo context to params.
+func (w *ServerInterfaceWrapper) DeleteShopsShopIdUnfollow(ctx echo.Context) error {
 	var err error
 	// ------------- Path parameter "shopId" -------------
 	var shopId string
@@ -373,8 +368,17 @@ func (w *ServerInterfaceWrapper) PostShopsShopIdUnfollow(ctx echo.Context) error
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter shopId: %s", err))
 	}
 
+	// Parameter object where we will unmarshal all parameters from the context
+	var params DeleteShopsShopIdUnfollowParams
+	// ------------- Required query parameter "userId" -------------
+
+	err = runtime.BindQueryParameter("form", true, true, "userId", ctx.QueryParams(), &params.UserId)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter userId: %s", err))
+	}
+
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.PostShopsShopIdUnfollow(ctx, shopId)
+	err = w.Handler.DeleteShopsShopIdUnfollow(ctx, shopId, params)
 	return err
 }
 
@@ -411,13 +415,13 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.GET(baseURL+"/ping", wrapper.GetPing)
 	router.GET(baseURL+"/recommendations/today", wrapper.GetRecommendationsToday)
 	router.GET(baseURL+"/search_shops", wrapper.GetSearchShops)
-	router.POST(baseURL+"/shop", wrapper.PostShop)
+	router.POST(baseURL+"/shops", wrapper.PostShops)
 	router.PUT(baseURL+"/shops/:shopId", wrapper.PutShopsShopId)
 	router.POST(baseURL+"/shops/:shopId/follow", wrapper.PostShopsShopIdFollow)
 	router.POST(baseURL+"/shops/:shopId/products", wrapper.PostShopsShopIdProducts)
 	router.POST(baseURL+"/shops/:shopId/products/:productId/caption", wrapper.PostShopsShopIdProductsProductIdCaption)
 	router.POST(baseURL+"/shops/:shopId/products/:productId/sold_out", wrapper.PostShopsShopIdProductsProductIdSoldOut)
 	router.GET(baseURL+"/shops/:shopId/search_products", wrapper.GetShopsShopIdSearchProducts)
-	router.POST(baseURL+"/shops/:shopId/unfollow", wrapper.PostShopsShopIdUnfollow)
+	router.DELETE(baseURL+"/shops/:shopId/unfollow", wrapper.DeleteShopsShopIdUnfollow)
 
 }
