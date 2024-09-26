@@ -1,4 +1,4 @@
-import { Product, Shop, User } from "@/types";
+import { Product, Purchase, Shop, User } from "@/types";
 
 export const dummyShops: Shop[] = [
   {
@@ -112,5 +112,50 @@ export const users: User[] = [
   },
 ];
 
-
-
+export const purchaseHistoryData: Purchase[] = [
+  {
+    id: "1",
+    userId: "user123",
+    productId: "product456",
+    productName: "スマートフォンケース",
+    productQuantity: 1,
+    priceAtPurchase: 1500, // 購入時の価格（例: 1500円）
+    purchaseDate: "2024-09-25T10:30:00.000Z" // 購入日（例: 2024年9月25日 19:30 JST）
+  },
+  {
+    id: "2",
+    userId: "user789",
+    productId: "product123",
+    productName: "ワイヤレスイヤホン",
+    productQuantity: 2,
+    priceAtPurchase: 8500, // 購入時の価格（例: 8500円）
+    purchaseDate: "2024-09-24T14:15:00.000Z" // 購入日（例: 2024年9月24日 23:15 JST）
+  },
+  {
+    id: "3",
+    userId: "user123",
+    productId: "product789",
+    productName: "ノートパソコンスタンド",
+    productQuantity: 1,
+    priceAtPurchase: 3200, // 購入時の価格（例: 3200円）
+    purchaseDate: "2024-09-23T18:45:00.000Z" // 購入日（例: 2024年9月23日 03:45 JST）
+  },
+  {
+    id: "4",
+    userId: "user456",
+    productId: "product456",
+    productName: "USB-C ハブ",
+    productQuantity: 1,
+    priceAtPurchase: 2500, // 購入時の価格（例: 2500円）
+    purchaseDate: "2024-09-22T08:00:00.000Z" // 購入日（例: 2024年9月22日 17:00 JST）
+  },
+  {
+    id: "5",
+    userId: "user789",
+    productId: "product456",
+    productName: "ゲーミングマウス",
+    productQuantity: 1,
+    priceAtPurchase: 6000, // 購入時の価格（例: 6000円）
+    purchaseDate: "2024-09-21T16:30:00.000Z" // 購入日（例: 2024年9月21日 01:30 JST）
+  }
+];

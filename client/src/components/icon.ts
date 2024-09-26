@@ -1,5 +1,5 @@
 // icons.ts
-import { faHome, faSearch, faCamera, faCreditCard, faStore, faUser, faPlus, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSearch, faCamera, faCreditCard, faStore, faUser, faPlus, faAngleLeft, faClock } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 
 export const Icons: Record<string, IconDefinition> = {
@@ -11,4 +11,5 @@ export const Icons: Record<string, IconDefinition> = {
   profile: faUser,
   add: faPlus,
   back: faAngleLeft,
+  clock: faClock,
 };

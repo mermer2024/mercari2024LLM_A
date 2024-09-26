@@ -27,3 +27,13 @@ export type User = {
   name: string;
   iconImage: string;
 }
+
+export type Purchase = {
+  id: string;
+  userId: string;
+  productId: string;
+  productName: string;
+  productQuantity: number;
+  priceAtPurchase: number;
+  purchaseDate: string;
+}
