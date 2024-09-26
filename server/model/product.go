@@ -25,9 +25,20 @@ func (repo *Repository) GetProduct(id uuid.UUID) (Product, error) {
 }
 
 func (repo *Repository) CreateProduct(product Product) error {
-	_, err := repo.db.Exec("INSERT INTO products (id, shop_id, name, description, price, stock, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+	tx := repo.db.MustBegin()
+	_, err := tx.Exec("INSERT INTO products (id, shop_id, name, description, price, stock, image_url, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 		product.ID, product.ShopID, product.Name, product.Description, product.Price, product.Stock, product.ImageURL, product.CreatedAt, product.UpdatedAt)
-	return err
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec("INSERT INTO shop_product_maps (shop_id, product_id) VALUES (?, ?)",
+		product.ShopID, product.ID)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	return tx.Commit()
 }
 
 func (repo *Repository) BulkCreateProducts(products []Product) error {
@@ -41,10 +52,4 @@ func (repo *Repository) BulkCreateProducts(products []Product) error {
 		}
 	}
 	return tx.Commit()
-}
-
-func (repo *Repository) GetProductsByShopID(shopID uuid.UUID) ([]Product, error) {
-	var products []Product
-	err := repo.db.Select(&products, "SELECT * FROM products WHERE shop_id = ?", shopID)
-	return products, err
 }

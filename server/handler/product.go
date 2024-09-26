@@ -44,7 +44,10 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
+	productList, err := h.repo.GetProductListByShopID(shopIdUUID)
+
 	// TODO:shopのdescriptionをLLMで変更する。
+	h.client.ShopDescription(ctx.Request().Context(), productList)
 
 	return ctx.JSON(http.StatusOK, nil)
 }
@@ -82,7 +85,7 @@ func (h *Handler) GetShopsShopIdSearchProducts(ctx echo.Context, shopId string, 
 	}
 
 	// search products
-	products, err := h.repo.GetProductsByShopID(shopIdUUID)
+	products, err := h.repo.GetProductListByShopID(shopIdUUID)
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}

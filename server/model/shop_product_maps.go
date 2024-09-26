@@ -1,18 +1,32 @@
 package model
 
+import "github.com/google/uuid"
+
 type ShopProductMaps struct {
-	ID        int `db:"id"`
-	ShopID    int `db:"shop_id"`
-	ProductID int `db:"product_id"`
+	ID        uuid.UUID `db:"id"`
+	ShopID    uuid.UUID `db:"shop_id"`
+	ProductID uuid.UUID `db:"product_id"`
 }
 
-func (repo *Repository) GetShopProductMapsByShopID(shopID int) ([]ShopProductMaps, error) {
+func (repo *Repository) GetShopProductMapsByShopID(shopID uuid.UUID) ([]ShopProductMaps, error) {
 	var shopProductMaps []ShopProductMaps
 	err := repo.db.Select(&shopProductMaps, "SELECT * FROM shop_product_maps WHERE shop_id = ?", shopID)
 	return shopProductMaps, err
 }
 
-func (repo *Repository) GetShopProductMapsByProductID(productID int) ([]ShopProductMaps, error) {
+func (repo *Repository) GetShopListByProductID(productID uuid.UUID) ([]Shop, error) {
+	var shops []Shop
+	err := repo.db.Select(&shops, "SELECT * FROM shops WHERE id IN (SELECT shop_id FROM shop_product_maps WHERE product_id = ?)", productID)
+	return shops, err
+}
+
+func (repo *Repository) GetProductListByShopID(shopID uuid.UUID) ([]Product, error) {
+	var products []Product
+	err := repo.db.Select(&products, "SELECT * FROM products WHERE id IN (SELECT product_id FROM shop_product_maps WHERE shop_id = ?)", shopID)
+	return products, err
+}
+
+func (repo *Repository) GetShopProductMapsByProductID(productID uuid.UUID) ([]ShopProductMaps, error) {
 	var shopProductMaps []ShopProductMaps
 	err := repo.db.Select(&shopProductMaps, "SELECT * FROM shop_product_maps WHERE product_id = ?", productID)
 	return shopProductMaps, err
