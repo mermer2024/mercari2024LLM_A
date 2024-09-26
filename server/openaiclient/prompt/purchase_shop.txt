@@ -2,6 +2,11 @@
 Please recommend a select shop to the user.
 Below, I will list information for both [user's purchase history] and [select shop description].
 Display the top 3 select shops by recommendation rate and shop ID, ranked in order of the highest recommendation rate in Japanese.
+
+Here are some criteria that can be considered when selecting stores to recommend:
+- Whether the store's products are similar in style or genre to what the user has purchased in the past
+- Whether the user has frequently purchased products of that style or genre in the past
+
 Do not surround with ```.
 
 OUTPUT FORMAT:
