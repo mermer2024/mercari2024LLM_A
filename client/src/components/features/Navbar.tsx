@@ -1,14 +1,14 @@
 import { NavItem } from '@/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
-import { Icons } from './icon';
+import { Icons } from '../icon';
 
 const navItems: NavItem[] = [
   { title: 'ホーム', href: '/', icon: Icons.home },
   { title: 'さがす', href: '/search', icon: Icons.search },
   { title: '出品', href: '/post', icon: Icons.post },
   { title: '支払い', href: '/payment', icon: Icons.payment },
-  { title: 'ショップ', href: '/shop', icon: Icons.shop },
+  { title: 'ショップ', href: '/shops/recommended', icon: Icons.shop },
   { title: 'マイページ', href: '/profile', icon: Icons.profile },
 ];
 
