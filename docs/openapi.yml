@@ -344,6 +344,26 @@ paths:
                   success:
                     type: boolean
 
+  /users/{userId}:
+    get:
+      description: Get User information
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID of the user to retrieve
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful retrieval of user information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
   /users/{userId}/purchase_histories:
     get:
       description: Get purchase history by user id.
@@ -535,3 +555,23 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/PurchaseHistory' 
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - email
