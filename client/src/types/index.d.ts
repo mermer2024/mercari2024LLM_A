@@ -37,4 +37,5 @@ export type Purchase = {
   productQuantity: number;
   priceAtPurchase: number;
   purchaseDate: string;
+  productImageUrl: string;
 }
