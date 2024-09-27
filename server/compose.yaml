@@ -13,7 +13,7 @@ services:
       DB_PORT: "3306"
       DB_NAME: app
       DEVELOPMENT: "true"
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_API_KEY:
       ALLOW_ORIGINS: 'http://localhost:3000,http://127.0.0.1:3000'
     depends_on:
       db:
