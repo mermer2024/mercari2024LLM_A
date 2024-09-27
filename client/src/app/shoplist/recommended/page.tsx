@@ -7,14 +7,12 @@ import ShopCard from "@/components/features/ShopCard";
 import SelectButton from "@/components/features/SelectButton";
 import { user } from "@/components/dummyData"; // 仮のユーザーデータ
 import LoadingSpinner from "@/components/features/LoadingSpinner";
+import { userId } from "@/components/const";
 
 export default function Page() {
   const [shops, setShops] = useState<Shop[]>([]); // ショップデータの状態
   const [loading, setLoading] = useState(true); // ローディング状態
   const [error, setError] = useState<string | null>(null); // エラー状態
-
-  // ユーザーID（仮のID）
-  const userId = "114639E0-6E0D-420F-998F-A52BB9ECC145";
 
   // ショップデータを取得する関数
   const fetchShops = async () => {
@@ -35,7 +33,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center p-4 gap-[19px] items-center">
+    <div className="flex flex-col justify-center p-4 gap-[19px] items-center pb-[103px]">
       {loading ? ( // ローディング中の表示
         <LoadingSpinner />
       ) : error ? ( // エラー発生時の表示

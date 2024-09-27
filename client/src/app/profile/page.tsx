@@ -7,14 +7,12 @@ import React, { useEffect, useState } from "react";
 import { Purchase } from "@/types";
 import { getHistories } from "./action";
 import LoadingSpinner from "@/components/features/LoadingSpinner";
+import { userId } from "@/components/const";
 
 const PurchaseHistoriesPage = () => {
   const [histories, setHistories] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(true); // ローディング状態を管理する
   const [error, setError] = useState<string | null>(null); // エラー状態を管理する
-
-  // 仮のユーザーID
-  const userId = "114639E0-6E0D-420F-998F-A52BB9ECC145";
   
   // 購入履歴を取得する関数
   const handleHistories = async () => {
@@ -34,7 +32,7 @@ const PurchaseHistoriesPage = () => {
   }, []); // 空の依存配列で初回のみ実行
 
   return (
-    <div className="mt-[112px]">
+    <div className="mt-[112px] mb-[103px]">
       <PageHeader title="購入した商品" />
       <div className="flex gap-[17px] my-[13px] ml-[21px]">
         <input type="checkbox" id="name" />

@@ -26,7 +26,7 @@ const ShopCard: React.FC<ShopCardProps> = ({ shopData, userData }) => {
       <img
         src={shopData.headerImage}
         alt={`${shopData.name}のヘッダー画像`}
-        className="self-stretch w-full h-[140px] object-cover"
+        className="self-stretch w-full h-[140px] object-cover rounded-[8px]"
       />
       <h2 className="self-stretch font-bold text-sm leading-5">{shopData.name}</h2>
       <p className="text-[10px] text-gray-400 leading-[14px]  line-clamp-2">{shopData.description}</p>
