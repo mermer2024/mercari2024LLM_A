@@ -33,6 +33,7 @@ func (h *Handler) GetUsersUserIdPurchaseHistories(ctx echo.Context, userId strin
 			ProductQuantity: history.Quantity,
 			PurchaseDate:    history.PurchaseDate,
 			UserId:          history.UserID.String(),
+			ImageUrl:        history.ProductImageUrl,
 		})
 	}
 
