@@ -24,6 +24,7 @@ func (h *Handler) GetUsersUserId(ctx echo.Context, userId string) error {
 		Id:        user.ID.String(),
 		Name:      user.Username,
 		Email:     user.Email,
+		ImageUrl:  &user.ImageURL,
 		CreatedAt: &user.CreatedAt,
 		UpdatedAt: &user.UpdatedAt,
 	})
