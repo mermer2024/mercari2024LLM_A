@@ -7,14 +7,12 @@ import React, { useEffect, useState } from "react";
 import { Purchase } from "@/types";
 import { getHistories } from "./action";
 import LoadingSpinner from "@/components/features/LoadingSpinner";
+import { userId } from "@/components/const";
 
 const PurchaseHistoriesPage = () => {
   const [histories, setHistories] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(true); // ローディング状態を管理する
   const [error, setError] = useState<string | null>(null); // エラー状態を管理する
-
-  // 仮のユーザーID
-  const userId = "114639E0-6E0D-420F-998F-A52BB9ECC145";
   
   // 購入履歴を取得する関数
   const handleHistories = async () => {
