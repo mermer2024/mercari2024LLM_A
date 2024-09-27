@@ -1,6 +1,6 @@
 // src/lib/apiClient.ts
 import axios from "axios";
-import { Shop, Product } from "@/types"; // 必要な型をインポート
+import { Shop, Product, User } from "@/types"; // 必要な型をインポート
 
 // axios インスタンスの作成
 const apiClient = axios.create({
@@ -28,5 +28,16 @@ export const searchProducts = async (shopId: string, keyword: string): Promise<P
   } catch (error) {
     console.error("Error searching products:", error);
     return []; // エラーが発生した場合は空の配列を返す
+  }
+};
+
+export const getUser = async (userId: string): Promise<User|null> => {
+  try {
+    // POST リクエストで userId をリクエストボディに含める
+    const res = await apiClient.get<User>(`/users/${userId}`);
+    return res.data; // レスポンスのデータを返す
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return null; // エラーが発生した場合は空の配列を返す
   }
 };
