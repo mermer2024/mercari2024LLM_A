@@ -24,7 +24,7 @@ const formatDate = (isoDateString:string) => {
   return (
     <div className='flex items-center p-[16px] gap-4 border-t-[0.4px] [border-bottom-style:solid] border-[#cacaca]'>
       <img
-        src={purchaseData.productImageUrl}
+        src={purchaseData.imageUrl}
         alt={`${purchaseData.productName}のヘッダー画像`}
         className="self-stretch w-[64px] h-[64px] object-cover rounded-[4px]"
       />
