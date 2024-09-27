@@ -87,7 +87,7 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
-	return ctx.JSON(http.StatusOK, nil)
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"success": true})
 }
 
 // (POST /shops/{shopId}/products/{productId}/caption)

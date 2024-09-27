@@ -46,7 +46,7 @@ func (h *Handler) PostShopsShopIdFollow(ctx echo.Context, shopId string) error {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
-	return ctx.JSON(http.StatusOK, map[string]string{"success": "true"})
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"success": true})
 }
 
 // (POST /shops/{shopId}/unfollow)
@@ -82,5 +82,5 @@ func (h *Handler) PostShopsShopIdUnfollow(ctx echo.Context, shopId string) error
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
-	return ctx.JSON(http.StatusOK, map[string]string{"success": "true"})
+	return ctx.JSON(http.StatusOK, map[string]interface{}{"success": true})
 }
