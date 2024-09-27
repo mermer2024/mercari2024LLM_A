@@ -26,7 +26,7 @@ export type Product = {
 export type User = {
   id: string;
   name: string;
-  iconImage: string;
+  image_url: string;
 }
 
 export type Purchase = {
