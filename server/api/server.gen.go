@@ -67,6 +67,7 @@ type PurchaseHistories = []PurchaseHistory
 // PurchaseHistory defines model for PurchaseHistory.
 type PurchaseHistory struct {
 	Id              string    `json:"id"`
+	ImageUrl        string    `json:"imageUrl"`
 	PriceAtPurchase float32   `json:"priceAtPurchase"`
 	ProductId       string    `json:"productId"`
 	ProductName     string    `json:"productName"`
