@@ -11,6 +11,7 @@ type User struct {
 	Username     string    `db:"username"`
 	Email        string    `db:"email"`
 	PasswordHash string    `db:"password_hash"`
+	ImageURL     string    `db:"image_url"`
 	CreatedAt    time.Time `db:"created_at"`
 	UpdatedAt    time.Time `db:"updated_at"`
 }

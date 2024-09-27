@@ -5,6 +5,7 @@ CREATE TABLE `users` (
                          `username` VARCHAR(255) NOT NULL,
                          `email` VARCHAR(255) NOT NULL,
                          `password_hash` TEXT NOT NULL,
+                         `image_url` TEXT,
                          `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          PRIMARY KEY (`id`)
