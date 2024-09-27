@@ -568,6 +568,8 @@ components:
         createdAt:
           type: string
           format: date-time
+        image_url:
+          type: string
         updatedAt:
           type: string
           format: date-time

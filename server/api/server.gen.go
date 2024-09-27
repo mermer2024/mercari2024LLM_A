@@ -101,6 +101,7 @@ type User struct {
 	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	Email     string     `json:"email"`
 	Id        string     `json:"id"`
+	ImageUrl  *string    `json:"image_url,omitempty"`
 	Name      string     `json:"name"`
 	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 }
