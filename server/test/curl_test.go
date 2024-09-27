@@ -31,6 +31,14 @@ type Recommendation struct {
 	Shop Shop `json:"shop"`
 }
 
+type User struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	CreateAt string `json:"createdAt"`
+	UpdateAt string `json:"updatedAt"`
+}
+
 type PurchaseHistory struct {
 	ID              string  `json:"id"`
 	UserID          string  `json:"userId"`
@@ -421,6 +429,70 @@ func TestAddProducts(t *testing.T) {
 		t.Fatalf("Expected success to be true, got false")
 	}
 	t.Logf("Successfully added products to the shop")
+}
+
+// Test for GET /api/users/{userId}
+func TestGetUserByID(t *testing.T) {
+	userID := "114639e0-6e0d-420f-998f-a52bb9ecc145"
+
+	resp, err := sendGetRequest("/api/users/" + userID)
+	if err != nil {
+		t.Fatalf("sendGetRequest error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status code 200, got %d", resp.StatusCode)
+	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("Failed to read response body: %v", err)
+	}
+
+	var user User
+	if err := json.Unmarshal(bodyBytes, &user); err != nil {
+		t.Fatalf("Failed to unmarshal response body into User: %v", err)
+	}
+
+	if user.ID != userID {
+		t.Fatalf("Expected user ID %s, got %s", userID, user.ID)
+	}
+
+	t.Logf("Retrieved user: %+v", user)
+}
+
+// Test for GET /api/users/{userId}/purchase_histories
+func TestGetUserPurchaseHistories(t *testing.T) {
+	userID := "114639e0-6e0d-420f-998f-a52bb9ecc145"
+
+	resp, err := sendGetRequest("/api/users/" + userID + "/purchase_histories")
+	if err != nil {
+		t.Fatalf("sendGetRequest error: %v", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected status code 200, got %d", resp.StatusCode)
+	}
+
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("Failed to read response body: %v", err)
+	}
+
+	var purchaseHistories []PurchaseHistory
+	if err := json.Unmarshal(bodyBytes, &purchaseHistories); err != nil {
+		t.Fatalf("Failed to unmarshal response body into PurchaseHistories: %v", err)
+	}
+
+	for _, ph := range purchaseHistories {
+		if ph.UserID != userID {
+			t.Fatalf("Expected purchase history with user ID %s, got %s", userID, ph.UserID)
+		}
+	}
+
+	t.Logf("Retrieved %d purchase histories for user %s", len(purchaseHistories), userID)
 }
 
 // Not Implemented

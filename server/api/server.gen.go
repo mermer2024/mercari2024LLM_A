@@ -96,6 +96,15 @@ type Shop struct {
 // ShopList defines model for ShopList.
 type ShopList = []Shop
 
+// User defines model for User.
+type User struct {
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	Email     string     `json:"email"`
+	Id        string     `json:"id"`
+	Name      string     `json:"name"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+}
+
 // PostMatchShopsJSONBody defines parameters for PostMatchShops.
 type PostMatchShopsJSONBody struct {
 	UserId string `json:"userId"`
@@ -199,6 +208,9 @@ type ServerInterface interface {
 
 	// (POST /shops/{shopId}/unfollow)
 	PostShopsShopIdUnfollow(ctx echo.Context, shopId string) error
+
+	// (GET /users/{userId})
+	GetUsersUserId(ctx echo.Context, userId string) error
 
 	// (GET /users/{userId}/purchase_histories)
 	GetUsersUserIdPurchaseHistories(ctx echo.Context, userId string) error
@@ -425,6 +437,22 @@ func (w *ServerInterfaceWrapper) PostShopsShopIdUnfollow(ctx echo.Context) error
 	return err
 }
 
+// GetUsersUserId converts echo context to params.
+func (w *ServerInterfaceWrapper) GetUsersUserId(ctx echo.Context) error {
+	var err error
+	// ------------- Path parameter "userId" -------------
+	var userId string
+
+	err = runtime.BindStyledParameterWithOptions("simple", "userId", ctx.Param("userId"), &userId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter userId: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.GetUsersUserId(ctx, userId)
+	return err
+}
+
 // GetUsersUserIdPurchaseHistories converts echo context to params.
 func (w *ServerInterfaceWrapper) GetUsersUserIdPurchaseHistories(ctx echo.Context) error {
 	var err error
@@ -483,6 +511,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.POST(baseURL+"/shops/:shopId/products/:productId/sold_out", wrapper.PostShopsShopIdProductsProductIdSoldOut)
 	router.GET(baseURL+"/shops/:shopId/search_products", wrapper.GetShopsShopIdSearchProducts)
 	router.POST(baseURL+"/shops/:shopId/unfollow", wrapper.PostShopsShopIdUnfollow)
+	router.GET(baseURL+"/users/:userId", wrapper.GetUsersUserId)
 	router.GET(baseURL+"/users/:userId/purchase_histories", wrapper.GetUsersUserIdPurchaseHistories)
 
 }
