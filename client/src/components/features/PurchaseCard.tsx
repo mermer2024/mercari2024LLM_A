@@ -30,8 +30,8 @@ const formatDate = (isoDateString:string) => {
       />
       <div>
         <h3 className='text-[12px] mb-[5px]'>{purchaseData.productName}</h3>
-        <div className='flex gap-[4px] items-center'>
-          <FontAwesomeIcon icon={Icons.clock} className="h-3"/>
+        <div className='flex gap-[4px] items-center'> 
+          <img src="/icon/time.png" alt="時計のアイコン" className="h-3"/>
           <p className='text-[12px]'>{formatDate(purchaseData.purchaseDate)}</p>
         </div>
       </div>

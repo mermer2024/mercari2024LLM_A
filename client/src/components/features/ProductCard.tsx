@@ -8,10 +8,10 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ productData }) => {
   return (
     <div className='w-[116px]'>
-      <h3 className='font-bold text-[14px] text-center'>{productData.caption}</h3>
+      {/* <h3 className='font-bold text-[14px] text-center'>{productData.caption}</h3> */}
       <div className='relative'>
         <img
-          src={productData.image}
+          src={productData.imageUrl}
           alt={`${productData.name}の画像`}
           className="self-stretch w-full h-[116px] object-cover rounded-[4px]"
         />

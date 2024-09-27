@@ -1,19 +1,25 @@
 import { Product } from '@/types';
-import React from 'react'
+import React from 'react';
 import ProductCard from './ProductCard';
+import DetailedProductCard from './DetailedProductCard'; // 詳細説明用のコンポーネントをインポート
 
 interface ProductViewProps {
   products: Product[];
 }
 
-const ProductView: React.FC<ProductViewProps> = ({ products })  => {
+const ProductView: React.FC<ProductViewProps> = ({ products }) => {
   return (
-    <div className='grid grid-cols-3 justify-items-center px-3 gap-1'>
-      {products.map((product) => {
-        return <ProductCard productData={product} />;
-      })}
+    <div className='px-3'>
+      {products.length > 0 && (
+        <DetailedProductCard productData={products[0]} /> 
+      )}
+      <div className='grid grid-cols-3 justify-items-center  gap-1'>
+        {products.slice(1).map((product) => ( 
+          <ProductCard key={product.id} productData={product} />
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ProductView
+export default ProductView;

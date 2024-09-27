@@ -11,7 +11,7 @@ const SelectButton = () => {
 
 
   return (
-    <img src="/select-button.png" alt="セレクトボタン" className='w-[56px] h-[56px] fixed right-4 bottom-[71px]' onClick={handleCardClick}/>
+    <img src="/select-button.png" alt="セレクトボタン" className='w-[56px] h-[56px] fixed right-4 bottom-[103px] z-10' onClick={handleCardClick}/>
   )
 }
 
