@@ -20,9 +20,11 @@ import (
 )
 
 func main() {
+	log.Println("Starting server...")
 	e := echo.New()
 
 	allowOrigins := strings.Split(os.Getenv("ALLOW_ORIGINS"), ",")
+	log.Println("Allow origins:", allowOrigins)
 
 	// middlewares
 	e.Use(middleware.Recover())
@@ -30,6 +32,8 @@ func main() {
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: allowOrigins,
 	}))
+
+	log.Println("Starting server...2")
 
 	dev, err := strconv.ParseBool(os.Getenv("DEVELOPMENT"))
 	if err != nil {
@@ -44,10 +48,14 @@ func main() {
 	}
 	defer db.Close()
 
+	log.Println("Connected to database")
+
 	// migrate tables
 	if err := migration.MigrateTables(db.DB); err != nil {
 		e.Logger.Fatal(err)
 	}
+
+	log.Println("Connected to database")
 
 	// setup repository
 	repo := model.New(db)
@@ -61,10 +69,14 @@ func main() {
 
 	openaiClient := openaiclient.New(apiClient)
 
+	log.Println("openai client created")
+
 	// setup routes
 	h := handler.New(repo, openaiClient)
 
 	api.RegisterHandlersWithBaseURL(e, h, "/api")
+
+	log.Println("openai client registered")
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
