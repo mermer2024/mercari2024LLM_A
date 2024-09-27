@@ -9,7 +9,7 @@ const UserCard: React.FC<UserCardProps> = ({ userData }) => {
   return (
     <div className="flex items-center">
       <img
-        src={userData.iconImage}
+        src={userData.image_url}
         alt={`${userData.name}のアイコン`}
         className="w-[24px] h-[24px] rounded-full mr-[6px]"
       />
