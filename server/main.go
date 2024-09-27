@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -21,10 +22,13 @@ import (
 
 func main() {
 	log.Println("Starting server...")
+	fmt.Print("Starting server...")
+
 	e := echo.New()
 
 	allowOrigins := strings.Split(os.Getenv("ALLOW_ORIGINS"), ",")
 	log.Println("Allow origins:", allowOrigins)
+	fmt.Println("Allow origins:", strings.Join(allowOrigins, ","))
 
 	// middlewares
 	e.Use(middleware.Recover())
@@ -34,12 +38,14 @@ func main() {
 	}))
 
 	log.Println("Starting server...2")
+	fmt.Print("Starting server...2")
 
 	dev, err := strconv.ParseBool(os.Getenv("DEVELOPMENT"))
 	if err != nil {
 		dev = false
 	}
 	log.Println("development mode:", dev)
+	fmt.Println("development mode:", dev)
 
 	// connect to database
 	db, err := sqlx.Connect("mysql", model.MySQL().FormatDSN())
@@ -49,6 +55,7 @@ func main() {
 	defer db.Close()
 
 	log.Println("Connected to database")
+	fmt.Println("Connected to database")
 
 	// migrate tables
 	if err := migration.MigrateTables(db.DB); err != nil {
@@ -56,6 +63,7 @@ func main() {
 	}
 
 	log.Println("Connected to database")
+	fmt.Println("Connected to database")
 
 	// setup repository
 	repo := model.New(db)
@@ -70,6 +78,7 @@ func main() {
 	openaiClient := openaiclient.New(apiClient)
 
 	log.Println("openai client created")
+	fmt.Println("openai client created")
 
 	// setup routes
 	h := handler.New(repo, openaiClient)
@@ -77,6 +86,7 @@ func main() {
 	api.RegisterHandlersWithBaseURL(e, h, "/api")
 
 	log.Println("openai client registered")
+	fmt.Println("openai client registered")
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
