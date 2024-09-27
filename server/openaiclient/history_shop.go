@@ -11,9 +11,9 @@ import (
 )
 
 //go:embed prompt/purchase_shop.txt
-var systemPromptForPurchaseShopDescription string
+var systemPromptForPurchaseShopCaption string
 
-func (c *Client) PurchaseShopDescription(ctx context.Context, purchaseHistories []model.PurchaseHistory, shops []model.Shop) (string, error) {
+func (c *Client) PurchaseShopCaption(ctx context.Context, purchaseHistories []model.PurchaseHistory, shops []model.Shop) (string, error) {
 	// []model.Productをつなげて文字列にする
 	var promptText string
 	promptText = "[user's purchase history]\n"
@@ -22,14 +22,16 @@ func (c *Client) PurchaseShopDescription(ctx context.Context, purchaseHistories 
 	}
 	promptText += "[select shop description]\n"
 	for _, shop := range shops {
-		promptText += shop.ID.String() + ":" + shop.Description + "\n"
+		if shop.Caption != nil {
+			promptText += shop.ID.String() + ":" + *shop.Caption + "\n"
+		}
 	}
 	req := openai.ChatCompletionRequest{
 		Model: openai.GPT4o,
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,
-				Content: systemPromptForPurchaseShopDescription,
+				Content: systemPromptForPurchaseShopCaption,
 			},
 			{
 				Role:    openai.ChatMessageRoleUser,

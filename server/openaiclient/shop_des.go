@@ -11,10 +11,10 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-//go:embed prompt/shop_description.txt
-var systemPromptForShopDescription string
+//go:embed prompt/shop_caption.txt
+var systemPromptForShopCaption string
 
-func (c *Client) ShopDescription(ctx context.Context, products []model.Product) (string, error) {
+func (c *Client) ShopCaption(ctx context.Context, products []model.Product) (string, error) {
 	// []model.Productをつなげて文字列にする
 	var productsStr string
 	productsStr = "id_,name,price,created,updated,thumbnails,description\n"
@@ -27,7 +27,7 @@ func (c *Client) ShopDescription(ctx context.Context, products []model.Product) 
 		Messages: []openai.ChatCompletionMessage{
 			{
 				Role:    openai.ChatMessageRoleSystem,
-				Content: systemPromptForShopDescription,
+				Content: systemPromptForShopCaption,
 			},
 			{
 				Role:    openai.ChatMessageRoleUser,

@@ -51,6 +51,15 @@ func (repo *Repository) GetShopDescriptionsAll() ([]Shop, error) {
 	return idAndDescriptions, nil
 }
 
+func (repo *Repository) GetShopCaptionsAll() ([]Shop, error) {
+	var idAndCaptions []Shop
+	err := repo.db.Select(&idAndCaptions, "SELECT id, caption FROM shops")
+	if err != nil {
+		return nil, err
+	}
+	return idAndCaptions, nil
+}
+
 func (repo *Repository) GetShopsByIDs(shopIDs []uuid.UUID) ([]Shop, error) {
 	var shops []Shop
 
@@ -98,5 +107,11 @@ func (repo *Repository) GetShopsAll() ([]Shop, error) {
 func (repo *Repository) GetShopsAllNoDescription() ([]Shop, error) {
 	var shops []Shop
 	err := repo.db.Select(&shops, "SELECT * FROM shops WHERE description IS NULL")
+	return shops, err
+}
+
+func (repo *Repository) GetShopsAllNoCaption() ([]Shop, error) {
+	var shops []Shop
+	err := repo.db.Select(&shops, "SELECT * FROM shops WHERE caption IS NULL")
 	return shops, err
 }
