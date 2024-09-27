@@ -35,7 +35,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div className="flex flex-col justify-center p-4 gap-[19px] items-center">
+    <div className="flex flex-col justify-center p-4 gap-[19px] items-center pb-[103px]">
       {loading ? ( // ローディング中の表示
         <LoadingSpinner />
       ) : error ? ( // エラー発生時の表示

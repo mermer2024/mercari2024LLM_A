@@ -34,7 +34,7 @@ const PurchaseHistoriesPage = () => {
   }, []); // 空の依存配列で初回のみ実行
 
   return (
-    <div className="mt-[112px]">
+    <div className="mt-[112px] mb-[103px]">
       <PageHeader title="購入した商品" />
       <div className="flex gap-[17px] my-[13px] ml-[21px]">
         <input type="checkbox" id="name" />
