@@ -94,6 +94,10 @@ curl -X GET "http://localhost:8080/api/search_shops"
 ```
 
 ```bash
+curl -X GET "http://localhost:8080/api/users/114639E0-6E0D-420F-998F-A52BB9ECC145"
+```
+
+```bash
 curl -X GET "http://localhost:8080/api/users/114639E0-6E0D-420F-998F-A52BB9ECC145/purchase_histories" \
   -H "Content-Type: application/json"
 ```
