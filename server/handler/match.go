@@ -33,13 +33,15 @@ func (h *Handler) PostMatchShops(ctx echo.Context) error {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
-	shopIdAndDescriptions, err := h.repo.GetShopDescriptionsAll()
+	shopIdAndCaptions, err := h.repo.GetShopCaptionsAll()
 	if err != nil {
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
+	log.Println("shopIdAndCaptions", shopIdAndCaptions)
+
 	// shopと購入履歴をLLMに投げる
-	text, err := h.client.PurchaseShopDescription(ctx.Request().Context(), purchaseHistories, shopIdAndDescriptions)
+	text, err := h.client.PurchaseShopCaption(ctx.Request().Context(), purchaseHistories, shopIdAndCaptions)
 	if err != nil {
 		log.Printf("failed to get product list: %v", err)
 		return ctx.JSON(http.StatusInternalServerError, err)

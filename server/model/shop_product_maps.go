@@ -57,3 +57,8 @@ func (repo *Repository) UpdateShopDescription(shopID uuid.UUID, description stri
 	_, err := repo.db.Exec("UPDATE shops SET description = ? WHERE id = ?", description, shopID)
 	return err
 }
+
+func (repo *Repository) UpdateShopCaption(shopID uuid.UUID, caption string) error {
+	_, err := repo.db.Exec("UPDATE shops SET caption = ? WHERE id = ?", caption, shopID)
+	return err
+}

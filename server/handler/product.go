@@ -71,17 +71,17 @@ func (h *Handler) PostShopsShopIdProducts(ctx echo.Context, shopId string) error
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
-	// TODO:shopのdescriptionをLLMで変更する。
-	text, err := h.client.ShopDescription(ctx.Request().Context(), productList)
+	// TODO:shopのcaptionをLLMで変更する。
+	text, err := h.client.ShopCaption(ctx.Request().Context(), productList)
 	if err != nil {
-		log.Printf("failed to get shop description: %v", err)
+		log.Printf("failed to get shop caption: %v", err)
 		return ctx.JSON(http.StatusInternalServerError, err)
 	}
 
 	log.Println(text)
 
-	// shopのdescriptionを更新
-	err = h.repo.UpdateShopDescription(shopIdUUID, text)
+	// shopのcaptionを更新
+	err = h.repo.UpdateShopCaption(shopIdUUID, text)
 	if err != nil {
 		log.Printf("failed to update shop description: %v", err)
 		return ctx.JSON(http.StatusInternalServerError, err)
